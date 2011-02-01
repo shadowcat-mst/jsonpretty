@@ -4,6 +4,10 @@ use strictures 1;
 use JSON;
 use Try::Tiny;
 
+sub new_json_object {
+  JSON->new->utf8->pretty->relaxed->canonical;
+}
+
 sub run {
 
   my $usage = "Usage:
@@ -11,7 +15,7 @@ sub run {
     $0 filename
   ";
 
-  my $json = JSON->new->utf8->pretty->relaxed->canonical;
+  my $json = new_json_object;
 
   my $src = @ARGV
     ? do {
