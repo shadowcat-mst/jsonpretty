@@ -50,16 +50,9 @@ sub encode_using {
 sub run {
   my $json = new_json_object;
 
-  my $src_data = source_data;
-
-  my $data_structure = decode_using $json, $src_data;
-
-  my $output = encode_using $json, $data_structure;
-
-  print $output;
+  print STDOUT encode_using $json, decode_using $json, source_data;
 
   return 0;
-
 }
 
 exit run unless caller;
