@@ -38,6 +38,15 @@ sub decode_using {
   }
 }
 
+sub encode_using {
+  my ($json, $data_structure) = @_;
+  try {
+    $json->encode($data_structure)
+  } catch {
+    die "Error generating JSON: $_\n";
+  }
+}
+
 sub run {
   my $json = new_json_object;
 
@@ -45,11 +54,7 @@ sub run {
 
   my $data_structure = decode_using $json, $src_data;
 
-  my $output = try {
-    $json->encode($data_structure)
-  } catch {
-    die "Error generating JSON: $_\n";
-  };
+  my $output = encode_using $json, $data_structure;
 
   print $output;
 
