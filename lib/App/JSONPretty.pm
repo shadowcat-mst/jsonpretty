@@ -25,10 +25,8 @@ sub source_filehandle {
 
 sub source_data {
   my $src = source_filehandle;
-  my $data = do { local $/; <$src> };
-  die "No source data supplied\n${usage}"
-    unless $data;
-  $data;
+  do { local $/; <$src> }
+    or die "No source data supplied\n${usage}"
 }
 
 sub run {
