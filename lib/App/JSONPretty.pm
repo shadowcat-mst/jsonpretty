@@ -4,6 +4,11 @@ use strictures 1;
 use JSON;
 use Try::Tiny;
 
+my $usage = "Usage:
+  $0 <filename
+  $0 filename
+";
+
 sub new_json_object {
   JSON->new->utf8->pretty->relaxed->canonical;
 }
@@ -18,21 +23,18 @@ sub source_filehandle {
   }
 }
 
+sub source_data {
+  my $src = source_filehandle;
+  my $data = do { local $/; <$src> };
+  die "No source data supplied\n${usage}"
+    unless $data;
+  $data;
+}
+
 sub run {
-
-  my $usage = "Usage:
-    $0 <filename
-    $0 filename
-  ";
-
   my $json = new_json_object;
 
-  my $src = source_filehandle;
-
-  my $src_data = do { local $/; <$src> };
-
-  die "No source data supplied\n${usage}"
-    unless $src_data;
+  my $src_data = source_data;
 
   my $data_structure = try {
     $json->decode($src_data)
