@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+package App::JSONPretty;
 
 use strictures 1;
 use JSON;
