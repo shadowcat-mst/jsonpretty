@@ -35,4 +35,10 @@ is(
   );
 }
 
+{
+  local $@;
+  eval { run_test('') };
+  like($@, qr/No source data supplied/, 'Error ok for empty data');
+}
+
 done_testing;
