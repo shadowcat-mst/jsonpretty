@@ -8,6 +8,16 @@ sub new_json_object {
   JSON->new->utf8->pretty->relaxed->canonical;
 }
 
+sub source_filehandle {
+  if (@ARGV) {
+    open my $fh, '<', $ARGV[0]
+      or die "Couldn't open $ARGV[0]: $!";
+    $fh;
+  } else {
+    *STDIN;
+  }
+}
+
 sub run {
 
   my $usage = "Usage:
@@ -17,13 +27,7 @@ sub run {
 
   my $json = new_json_object;
 
-  my $src = @ARGV
-    ? do {
-        open my $fh, '<', $ARGV[0]
-          or die "Couldn't open $ARGV[0]: $!";
-        $fh;
-      }
-    : \*STDIN;
+  my $src = source_filehandle;
 
   my $src_data = do { local $/; <$src> };
 
