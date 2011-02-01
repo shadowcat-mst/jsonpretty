@@ -1,7 +1,7 @@
 package App::JSONPretty;
 
 use strictures 1;
-use JSON;
+use JSON ();
 use Try::Tiny;
 
 my $usage = "Usage:
@@ -29,16 +29,21 @@ sub source_data {
     or die "No source data supplied\n${usage}"
 }
 
+sub decode_using {
+  my ($json, $src_data) = @_;
+  try {
+    $json->decode($src_data)
+  } catch {
+    die "Error parsing JSON: $_\n";
+  }
+}
+
 sub run {
   my $json = new_json_object;
 
   my $src_data = source_data;
 
-  my $data_structure = try {
-    $json->decode($src_data)
-  } catch {
-    die "Error parsing JSON: $_\n";
-  };
+  my $data_structure = decode_using $json, $src_data;
 
   my $output = try {
     $json->encode($data_structure)
