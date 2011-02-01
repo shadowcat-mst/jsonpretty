@@ -4,7 +4,7 @@ use App::JSONPretty;
 
 sub run_test {
   my ($in) = @_;
-  my $out;
+  my $out = '';
   local (*STDIN, *STDOUT);
   open STDIN, '<', \$in;
   open STDOUT, '>', \$out;
@@ -19,7 +19,20 @@ is(
    "foo" : 1
 }
 ',
-  "Output ok (simple test)"
+  'Output ok (simple STDIN test)'
 );
+
+{
+  local @ARGV = 't/simple.json';
+  is(
+    run_test(''),
+    q'{
+   "bar" : 2,
+   "foo" : 1
+}
+',
+    'Output ok (simple @ARGV test)'
+  );
+}
 
 done_testing;
